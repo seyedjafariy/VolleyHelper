@@ -57,8 +57,9 @@ public class GsonRequest<T> extends Request<T> {
             parsed = new String(response.data);
         }
         Log.d(TAG, "response in String: " + parsed);
-        if (requestedType.equals(new TypeToken<String>() {}))
-            return Response.success((T)parsed, HttpHeaderParser.parseCacheHeaders(response));
+        if (requestedType.equals(new TypeToken<String>() {
+        }))
+            return Response.success((T) parsed, HttpHeaderParser.parseCacheHeaders(response));
         else
             return Response.success((T) mGson.fromJson(parsed, requestedType.getType()), HttpHeaderParser.parseCacheHeaders(response));
     }
@@ -99,7 +100,10 @@ public class GsonRequest<T> extends Request<T> {
 
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
-        return header;
+        if (header != null)
+            return header;
+        else
+            return super.getHeaders();
     }
 
     public GsonRequest<T> setHeader(Map<String, String> header) {
@@ -135,7 +139,7 @@ public class GsonRequest<T> extends Request<T> {
         return this;
     }
 
-    public void release(){
+    public void release() {
         mListener = null;
     }
 
